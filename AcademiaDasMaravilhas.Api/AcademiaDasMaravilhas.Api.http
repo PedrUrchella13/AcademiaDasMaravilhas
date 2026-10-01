@@ -1,0 +1,6 @@
+@AcademiaDasMaravilhas.Api_HostAddress = http://localhost:5116
+
+GET {{AcademiaDasMaravilhas.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
