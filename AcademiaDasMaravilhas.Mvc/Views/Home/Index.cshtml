@@ -1,8 +1,41 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="p-5 mb-4 bg-dark text-white rounded-3">
+    <div class="container-fluid py-4">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <h1 class="display-5 fw-bold">Transforme seu corpo na PowerFit 💪</h1>
+                <p class="fs-4">
+                    Musculação, aulas em grupo, avaliação física e acompanhamento profissional em um só lugar.
+                </p>
+                <a asp-controller="Account" asp-action="Register" class="btn btn-light btn-lg">
+                    Matricule-se agora
+                </a>
+            </div>
+
+            <div class="col-md-5 text-center">
+                <img src="~/../../../wwwroot/img/akademia.jpeg"
+                     alt="Pessoa treinando na academia PowerFit"
+                     class="img-fluid rounded-3 shadow"
+                     style="max-height: 300px; object-fit: cover;" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row text-center mb-5">
+    <div class="col-md-4">
+        <h3>🏋️ Estrutura completa</h3>
+        <p>Equipamentos modernos e ambiente climatizado.</p>
+    </div>
+    <div class="col-md-4">
+        <h3>👨‍🏫 Profissionais qualificados</h3>
+        <p>Instrutores e personal trainers disponíveis todos os dias.</p>
+    </div>
+    <div class="col-md-4">
+        <h3>📊 Avaliação física</h3>
+        <p>Acompanhamento de evolução periódico e individualizado.</p>
+    </div>
 </div>

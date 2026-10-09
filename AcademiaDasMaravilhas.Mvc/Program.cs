@@ -47,31 +47,34 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
-    // ---- Seed de Roles e usuário Admin padrão ----
-        using (var scope = app.Services.CreateScope())
+// ---- Migrações e seed de roles e usuário Admin padrão ----
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await dbContext.Database.MigrateAsync();
+
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+    string[] roles = { "Admin", "Colaborador", "Cliente" };
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+            await roleManager.CreateAsync(new IdentityRole(role));
+    }
+
+    string emailAdmin = "admin@powerfit.com";
+    if (await userManager.FindByEmailAsync(emailAdmin) is null)
+    {
+        var admin = new ApplicationUser
         {
-            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-
-            string[] roles = { "Admin", "Colaborador", "Cliente" };
-            foreach (var role in roles)
-            {
-                if (!await roleManager.RoleExistsAsync(role))
-                    await roleManager.CreateAsync(new IdentityRole(role));
-            }
-
-            string emailAdmin = "admin@powerfit.com";
-            if (await userManager.FindByEmailAsync(emailAdmin) is null)
-            {
-                var admin = new ApplicationUser
-                {
-                    UserName = emailAdmin,
-                    Email = emailAdmin,
-                    NomeCompleto = "Administrador"
-                };
-                await userManager.CreateAsync(admin, "Admin@123");
-                await userManager.AddToRoleAsync(admin, "Admin");
-            }
-        }
+            UserName = emailAdmin,
+            Email = emailAdmin,
+            NomeCompleto = "Administrador"
+        };
+        await userManager.CreateAsync(admin, "Admin@123");
+        await userManager.AddToRoleAsync(admin, "Admin");
+    }
+}
 
 app.Run();
